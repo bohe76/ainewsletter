@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인타임테크 제안서 - AI 뉴스레터 자동화</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+        :root {
+            --primary-color: #2563EB; /* Main Blue */
+            --accent-color: #00C4CC; /* Cyan/Teal for Tech */
+            --bg-dark: #111827;
+            --text-white: #F3F4F6;
+            --text-gray: #9CA3AF;
+            --card-bg: #1F2937;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* 한국어 단어 단위 줄바꿈 */
+            word-break: keep-all; 
+            /* 자간 조절: 요청하신 대로 좁게 설정 */
+            letter-spacing: -0.03em; 
+        }
+
+        /* Slide Container */
+        .slide-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            box-sizing: border-box;
+            background: radial-gradient(circle at top right, #1e3a8a 0%, #111827 60%);
+            /* 내용이 넘치면 스크롤 가능하게 변경 */
+            overflow-y: auto; 
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 1;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 3rem; 
+            margin-bottom: 20px;
+            font-weight: 900;
+            background: linear-gradient(to right, #60A5FA, #00C4CC);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            line-height: 1.2;
+            letter-spacing: -0.04em; 
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            color: white;
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            text-align: center;
+            letter-spacing: -0.035em;
+        }
+
+        h3 {
+            font-size: 1.3rem; 
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        p, li {
+            font-size: 1.1rem; 
+            line-height: 1.6;
+            color: #d1d5db;
+        }
+
+        /* Layouts */
+        .content-box {
+            width: 85%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .content-box > p {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            width: 100%;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border: 1px solid #374151;
+            transition: transform 0.3s;
+            overflow: hidden; 
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+
+        .icon-large {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* Flowchart Styles */
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 20px;
+            flex-wrap: nowrap;
+        }
+
+        .flow-step {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            /* 너비를 줄여서 화살표와 겹치지 않게 수정 (18%) */
+            width: 18%; 
+            position: relative;
+            border: 1px solid var(--primary-color);
+            word-break: keep-all; 
+        }
+
+        .flow-arrow {
+            font-size: 1.5rem;
+            color: var(--text-gray);
+            /* 화살표 좌우 여백 확보 */
+            margin: 0 5px; 
+        }
+
+        /* Controls */
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            right: 50px;
+            z-index: 100;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            background-color: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-color);
+        }
+
+        /* AI Demo Button & Modal */
+        .btn-ai {
+            background: linear-gradient(90deg, #2563EB, #00C4CC);
+            border: none;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(0, 196, 204, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        .btn-ai:hover {
+            transform: scale(1.05);
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 196, 204, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 196, 204, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 196, 204, 0); }
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #1F2937;
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid var(--accent-color);
+            box-shadow: 0 0 30px rgba(0, 196, 204, 0.2);
+            position: relative;
+            color: #fff;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #374151;
+            padding-bottom: 15px;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: var(--text-white);
+            font-size: 1.5rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-gray);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .modal-input {
+            flex: 2;
+            padding: 12px;
+            background-color: #111827;
+            border: 1px solid #4B5563;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .modal-select {
+            flex: 1;
+            padding: 12px;
+            background-color: #111827;
+            border: 1px solid #4B5563;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .ai-output-area {
+            background-color: #111827;
+            padding: 20px;
+            border-radius: 10px;
+            min-height: 200px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #374151;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-top: 15px;
+            white-space: pre-wrap;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, #2563EB, #00C4CC);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .generate-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .generate-btn:disabled {
+            background: #4B5563;
+            cursor: not-allowed;
+        }
+
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            color: var(--accent-color);
+            margin-top: 20px;
+        }
+        
+        .ai-badge {
+            display: inline-block;
+            background: rgba(0, 196, 204, 0.1);
+            color: var(--accent-color);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            border: 1px solid rgba(0, 196, 204, 0.3);
+        }
+
+        .page-indicator {
+            font-size: 1rem;
+            color: var(--text-gray);
+        }
+
+        /* Specific Slide Tweaks */
+        .cover-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-gray);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .presenter {
+            margin-top: 40px;
+            font-size: 1.1rem;
+            border-top: 1px solid #374151;
+            padding-top: 20px;
+        }
+
+        .highlight {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        ul {
+            list-style-type: none;
+            padding: 0;
+            width: 100%;
+        }
+        
+        ul li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+            text-align: left;
+        }
+        
+        ul li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            position: relative;
+            width: 100%;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #374151;
+            z-index: 0;
+        }
+        
+        .timeline-item {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            width: 30%;
+        }
+        
+        .timeline-dot {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-dark);
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px auto;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        /* Code Block Style Fix - Neon Cyan & Left Aligned & Indentation Fix */
+        .code-block {
+            background: #111; 
+            padding: 15px; 
+            border-radius: 5px; 
+            font-family: monospace; 
+            color: #00FFFF; 
+            margin-top: 10px;
+            word-break: break-all;
+            /* normal로 변경하여 HTML 소스 코드의 공백이 렌더링되지 않도록 함 */
+            white-space: normal;
+            text-align: left; 
+            line-height: 1.6;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="slide-container">
+
+    <!-- Slide 1: Cover -->
+    <div class="slide active" id="slide-1">
+        <div class="content-box">
+            <div style="margin-bottom: 20px;">
+                <i class="fa-solid fa-paper-plane" style="font-size: 4rem; color: var(--primary-color);"></i>
+            </div>
+            <h1>구독자가 기다리는 뉴스레터,<br>AI로 완성하다</h1>
+            <p class="cover-subtitle">Claude 4.5 Sonnet & Make 자동화 워크플로우를 통한<br>초개인화 뉴스레터 구축 전략 (POC)</p>
+            <div class="presenter">
+                인타임테크 김정헌 실장 | 2025. 01.
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2: Background & Goal -->
+    <div class="slide" id="slide-2">
+        <div class="content-box">
+            <h2>단순 자동화를 넘어, '인사이트'가 핵심입니다</h2>
+            <div class="two-columns">
+                <div class="card" style="border-left: 5px solid #EF4444;">
+                    <h3><i class="fa-solid fa-triangle-exclamation"></i> Current Pain Points</h3>
+                    <ul>
+                        <li style="color: #FCA5A5;">뉴스 큐레이션에 과도한 리소스 투입</li>
+                        <li style="color: #FCA5A5;">반복 업무로 인한 담당자 피로도 증가</li>
+                        <li style="color: #FCA5A5;">획일화된 템플릿으로 인한 이탈 우려</li>
+                    </ul>
+                </div>
+                <div class="card" style="border-left: 5px solid #10B981;">
+                    <h3><i class="fa-solid fa-bullseye"></i> Project Goal</h3>
+                    <ul>
+                        <li style="color: #6EE7B7;"><strong>Full-Automation:</strong> 수집부터 발송까지 100% 무인화</li>
+                        <li style="color: #6EE7B7;"><strong>High-Quality:</strong> Claude 4.5 기반의 깊이 있는 분석</li>
+                        <li style="color: #6EE7B7;"><strong>Trustworthy:</strong> Serper API 기반 팩트 체크</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Architecture -->
+    <div class="slide" id="slide-3">
+        <div class="content-box">
+            <h2>System Architecture (Workflow)</h2>
+            <p>Make 플랫폼 기반의 End-to-End 오케스트레이션</p>
+            
+            <div class="flow-container">
+                <div class="flow-step">
+                    <i class="fa-brands fa-google icon-large"></i>
+                    <h3>Data 수집</h3>
+                    <p>Serper API<br>고정밀 크롤링</p>
+                </div>
+                <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                <div class="flow-step">
+                    <i class="fa-solid fa-brain icon-large"></i>
+                    <h3>AI 분석</h3>
+                    <p>Claude 4.5<br>인사이트 & 톤앤매너</p>
+                </div>
+                <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                <div class="flow-step">
+                    <i class="fa-solid fa-file-lines icon-large"></i>
+                    <h3>CMS 생성</h3>
+                    <p>Google Sheets<br>템플릿 매핑</p>
+                </div>
+                <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                <div class="flow-step">
+                    <i class="fa-solid fa-envelope icon-large"></i>
+                    <h3>자동 발송</h3>
+                    <p>Stibee API<br>구독자 리스트 동기화</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Tech 1 (Serper API) -->
+    <div class="slide" id="slide-4">
+        <div class="content-box">
+            <h2>핵심 기술 1: 고정밀 데이터 수집</h2>
+            <p>Serper API 활용: 노이즈는 거르고, 핵심만 담습니다.</p>
+            
+            <div class="two-columns" style="margin-top: 20px;">
+                <div class="card">
+                    <h3><i class="fa-solid fa-filter"></i> Search Operators (검색 연산자)</h3>
+                    <p>단순 검색이 아닌 <strong>타겟팅 쿼리</strong> 생성</p>
+                    <div class="code-block">
+                        site:blooloop.com "Immersive Tech"<br>
+                        filetype:pdf "Visitor Experience Report"<br>
+                        "Gen Z" AND "Pop-up Store" after:2025-01
+                    </div>
+                </div>
+                <div class="card">
+                    <h3><i class="fa-solid fa-earth-americas"></i> 지역 및 언어 최적화</h3>
+                    <p>비즈니스 목적에 맞는 <strong>시장 타겟팅</strong></p>
+                    <ul style="margin-top: 20px;">
+                        <li><strong>gl:kr</strong> 국내 최신 뉴스 집중</li>
+                        <li><strong>gl:us</strong> 글로벌 트렌드 선점</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Tech 2 (Hallucination) -->
+    <div class="slide" id="slide-5">
+        <div class="content-box">
+            <h2>핵심 기술 2: 할루시네이션 방지</h2>
+            <p>AI의 거짓말을 원천 차단하는 3단계 검증 프로세스</p>
+            
+            <div style="display: flex; gap: 20px; margin-top: 30px; width: 100%;">
+                <div class="card" style="flex: 1; text-align: center;">
+                    <i class="fa-solid fa-anchor icon-large"></i>
+                    <h3>Data Grounding</h3>
+                    <p>"수집된 기사 원문 내에서만 요약하라"는<br>강력한 제약 조건 부여</p>
+                </div>
+                <div class="card" style="flex: 1; text-align: center;">
+                    <i class="fa-solid fa-magnifying-glass-chart icon-large"></i>
+                    <h3>Fact Cross-Check</h3>
+                    <p>생성된 텍스트 내 수치(날짜, 금액)와<br>원문 데이터 자동 대조</p>
+                </div>
+                <div class="card" style="flex: 1; text-align: center;">
+                    <i class="fa-solid fa-link icon-large"></i>
+                    <h3>Source Mapping</h3>
+                    <p>모든 아티클 하단에<br>원문 링크 자동 삽입</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Multi Template -->
+    <div class="slide" id="slide-6">
+        <div class="content-box">
+            <h2>차별화 전략: 멀티 템플릿 로테이션</h2>
+            <p>매주 새로운 경험으로 구독자 피로도를 관리합니다.</p>
+            
+            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 30px; flex-wrap: wrap;">
+                <div class="card" style="width: 180px; height: 220px; background: white; color: #333; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div style="width: 80%; height: 60px; background: #eee; margin-bottom: 10px;"></div>
+                    <div style="width: 80%; height: 8px; background: #ddd; margin-bottom: 5px;"></div>
+                    <div style="width: 60%; height: 8px; background: #ddd;"></div>
+                    <h4 style="margin-top:15px; color: #333; font-size: 1rem;">Type A<br>뉴스 큐레이션</h4>
+                </div>
+                <div class="card" style="width: 180px; height: 220px; background: white; color: #333; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div style="width: 90%; height: 100px; background: #eee; margin-bottom: 10px; display: flex; align-items: center; justify-content: center;">IMG</div>
+                    <div style="width: 90%; height: 15px; background: #ddd;"></div>
+                    <h4 style="margin-top:15px; color: #333; font-size: 1rem;">Type B<br>매거진형</h4>
+                </div>
+                <div class="card" style="width: 180px; height: 220px; background: white; color: #333; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div style="width: 80%; height: 8px; background: #ddd; margin-bottom: 8px;"></div>
+                    <div style="width: 80%; height: 8px; background: #ddd; margin-bottom: 8px;"></div>
+                    <div style="width: 80%; height: 8px; background: #ddd; margin-bottom: 8px;"></div>
+                    <div style="width: 80%; height: 8px; background: #ddd; margin-bottom: 8px;"></div>
+                    <h4 style="margin-top:15px; color: #333; font-size: 1rem;">Type C<br>리포트형</h4>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 20px; color: var(--accent-color);">
+                <i class="fa-solid fa-rotate"></i> 주차별 자동 순환 발송 시스템
+            </p>
+        </div>
+    </div>
+
+    <!-- Slide 7: Operation -->
+    <div class="slide" id="slide-7">
+        <div class="content-box">
+            <h2>운영 효율화: No-Code Operation</h2>
+            <div class="two-columns">
+                <div class="card">
+                    <h3><i class="fa-brands fa-google-drive"></i> Google Sheets 컨트롤 타워</h3>
+                    <p>개발자 없이 운영자가 직접 제어합니다.</p>
+                    <ul>
+                        <li>타겟 키워드 변경</li>
+                        <li>발송 시간 스케줄링</li>
+                        <li>템플릿 ID 선택</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3><i class="fa-solid fa-chart-line"></i> 실시간 모니터링</h3>
+                    <p>블랙박스가 아닌 투명한 프로세스</p>
+                    <ul>
+                        <li>뉴스 수집 현황 실시간 집계</li>
+                        <li>발송 성공/실패 여부 시트 기록</li>
+                        <li>프롬프트 톤앤매너 즉시 수정</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Schedule -->
+    <div class="slide" id="slide-8">
+        <div class="content-box">
+            <h2>추진 일정 및 고도화 계획</h2>
+            <p>3주 완성 POC, 그리고 지속적인 확장</p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot">1주</div>
+                    <h3>파이프라인 구축</h3>
+                    <p>데이터 수집<br>Serper API 최적화</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">2주</div>
+                    <h3>AI & 템플릿</h3>
+                    <p>프롬프트 엔지니어링<br>디자인 개발</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">3주</div>
+                    <h3>통합 테스트</h3>
+                    <p>시범 발송<br>운영 안정화</p>
+                </div>
+            </div>
+            
+            <div class="card" style="margin-top: 30px; text-align: center; background: rgba(37, 99, 235, 0.2); border-color: var(--primary-color);">
+                <strong>Future Plan:</strong> 개인화 추천 뉴스레터 & SNS 자동 업로드 확장 (One-Source Multi-Use)
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Q&A -->
+    <div class="slide" id="slide-9">
+        <div class="content-box">
+            <div style="text-align: center;">
+                <i class="fa-regular fa-comments" style="font-size: 4rem; color: var(--accent-color); margin-bottom: 20px;"></i>
+                <h2>Q & A</h2>
+                <p style="font-size: 1.3rem;">성공적인 프로젝트를 위한 파트너,<br><strong>인타임테크</strong>가 함께하겠습니다.</p>
+                <p style="margin-top: 30px; color: var(--text-gray);">감사합니다.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- AI Demo Modal -->
+<div class="modal-overlay" id="aiModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>✨ AI 뉴스레터 생성 시연</h3>
+            <button class="close-btn" onclick="closeModal()"><i class="fa-solid fa-times"></i></button>
+        </div>
+        
+        <div class="input-group">
+            <div class="input-row">
+                <input type="text" id="aiTopic" class="modal-input" placeholder="주제 입력 (예: 2025 테마파크 트렌드)" value="MZ세대를 사로잡는 몰입형 테마파크 경험 전략">
+                <select id="aiTone" class="modal-select">
+                    <option value="전문적인">전문적인</option>
+                    <option value="친근한/위트있는">친근한</option>
+                    <option value="간결한 요약">간결한</option>
+                </select>
+            </div>
+            <button class="generate-btn" id="generateBtn" onclick="generateNewsletter()">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> 뉴스레터 생성하기
+            </button>
+        </div>
+
+        <div class="ai-output-area" id="aiOutput">
+            <div style="color: #6B7280; text-align: center; margin-top: 60px;">
+                주제와 톤앤매너를 선택하고<br>'생성하기' 버튼을 눌러주세요.<br>
+                <small>(Gemini Pro 2.5 모델이 실시간으로 작성합니다)</small>
+            </div>
+        </div>
+        
+        <div class="loading-spinner" id="loadingSpinner">
+            <i class="fa-solid fa-circle-notch fa-spin fa-2x"></i>
+            <p style="margin-top: 10px;">최신 뉴스를 분석하여 인사이트를 도출 중입니다...</p>
+        </div>
+    </div>
+</div>
+
+<div class="controls">
+    <button class="btn btn-ai" onclick="openModal()"><i class="fa-solid fa-robot"></i> AI Demo</button>
+    <span class="page-indicator" id="page-num">1 / 9</span>
+    <button class="btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i> Prev</button>
+    <button class="btn" onclick="nextSlide()">Next <i class="fa-solid fa-chevron-right"></i></button>
+</div>
+
+<script>
+    let currentSlide = 1;
+    const totalSlides = 9;
+    const apiKey = ""; // API Key will be injected by the environment
+
+    function showSlide(n) {
+        const slides = document.querySelectorAll('.slide');
+        slides.forEach(slide => {
+            slide.classList.remove('active');
+        });
+
+        if (n > totalSlides) currentSlide = 1;
+        if (n < 1) currentSlide = totalSlides;
+
+        document.getElementById(`slide-${currentSlide}`).classList.add('active');
+        document.getElementById('page-num').innerText = `${currentSlide} / ${totalSlides}`;
+    }
+
+    function nextSlide() {
+        currentSlide++;
+        showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+        currentSlide--;
+        showSlide(currentSlide);
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "ArrowRight") {
+            nextSlide();
+        } else if (event.key === "ArrowLeft") {
+            prevSlide();
+        } else if (event.key === "Escape") {
+            closeModal();
+        }
+    });
+
+    // AI Modal Logic
+    function openModal() {
+        document.getElementById('aiModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('aiModal').style.display = 'none';
+    }
+
+    async function generateNewsletter() {
+        const topic = document.getElementById('aiTopic').value;
+        const tone = document.getElementById('aiTone').value;
+        const outputArea = document.getElementById('aiOutput');
+        const spinner = document.getElementById('loadingSpinner');
+        const btn = document.getElementById('generateBtn');
+
+        if (!topic) {
+            alert("주제를 입력해주세요.");
+            return;
+        }
+
+        // UI Update: Loading State
+        outputArea.style.display = 'none';
+        spinner.style.display = 'block';
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 생성 중...';
+
+        const prompt = `
+            당신은 전문 뉴스레터 에디터입니다. 아래 주제에 대해 '${tone}' 톤으로 짧은 뉴스레터 인트로와 핵심 인사이트 2가지를 작성해주세요.
+            
+            주제: ${topic}
+            
+            형식:
+            [뉴스레터 제목]
+            
+            안녕하세요, 구독자님!
+            (인트로 내용)
+            
+            💡 핵심 인사이트
+            1. (인사이트 1)
+            2. (인사이트 2)
+            
+            (마무리 인사)
+        `;
+
+        try {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: prompt }]
+                    }]
+                })
+            });
+
+            const data = await response.json();
+            
+            if (data.error) {
+                throw new Error(data.error.message);
+            }
+
+            const rawText = data.candidates[0].content.parts[0].text;
+            
+            // Simple Formatting
+            const formattedText = rawText
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
+                .replace(/\n/g, '<br>'); // Line breaks
+
+            outputArea.innerHTML = `<div class="ai-badge">Generated by Gemini</div><br>${formattedText}`;
+
+        } catch (error) {
+            console.error('Error:', error);
+            outputArea.innerHTML = `<div style="color: #EF4444; text-align: center;">
+                <i class="fa-solid fa-circle-exclamation"></i><br>
+                오류가 발생했습니다.<br>잠시 후 다시 시도해주세요.<br>
+                <small>${error.message}</small>
+            </div>`;
+        } finally {
+            spinner.style.display = 'none';
+            outputArea.style.display = 'block';
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> 뉴스레터 생성하기';
+        }
+    }
+</script>
+
+</body>
+</html>
