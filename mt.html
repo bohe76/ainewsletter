@@ -62,9 +62,9 @@
             transition: opacity 0.5s ease-in-out, visibility 0.5s;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
-            padding: 40px;
+            padding: 200px 40px 40px;
             box-sizing: border-box;
             background: radial-gradient(circle at top right, #1e3a8a 0%, #111827 60%);
             /* 내용이 넘치면 스크롤 가능하게 변경 */
@@ -166,22 +166,34 @@
         .flow-container {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             width: 100%;
             margin-top: 20px;
             flex-wrap: nowrap;
+            gap: 15px;
         }
 
         .flow-step {
             background: linear-gradient(145deg, #1e293b, #0f172a);
-            padding: 15px;
+            padding: 20px;
             border-radius: 12px;
             text-align: center;
-            /* 너비를 줄여서 화살표와 겹치지 않게 수정 (18%) */
-            width: 18%;
+            width: 200px;
+            height: 200px;
             position: relative;
             border: 1px solid var(--primary-color);
             word-break: keep-all;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .flow-step h3,
+        .flow-step p,
+        .flow-step i {
+            margin: 0 !important;
         }
 
         .flow-arrow {
@@ -504,17 +516,20 @@
         <div class="slide" id="slide-2">
             <div class="content-box">
                 <h2>단순 자동화를 넘어, '인사이트'가 핵심입니다</h2>
-                <div class="two-columns">
-                    <div class="card" style="border-left: 5px solid #EF4444;">
-                        <h3><i class="fa-solid fa-triangle-exclamation"></i> Current Pain Points</h3>
+                <p>단순 반복 업무를 넘어, 데이터 속의 숨은 가치를 찾아 전달합니다.</p>
+                <div class="two-columns"
+                    style="margin-top: 30px; display: grid; grid-template-columns: repeat(2, 480px); justify-content: center; gap: 30px; width: 100%;">
+                    <div class="card" style="width: 480px; box-sizing: border-box; border-left: 5px solid #EF4444;">
+                        <h3 style="text-align: center;"><i class="fa-solid fa-triangle-exclamation"></i> Current Pain
+                            Points</h3>
                         <ul>
                             <li style="color: #FCA5A5;">뉴스 큐레이션에 과도한 리소스 투입</li>
                             <li style="color: #FCA5A5;">반복 업무로 인한 담당자 피로도 증가</li>
                             <li style="color: #FCA5A5;">획일화된 템플릿으로 인한 이탈 우려</li>
                         </ul>
                     </div>
-                    <div class="card" style="border-left: 5px solid #10B981;">
-                        <h3><i class="fa-solid fa-bullseye"></i> Project Goal</h3>
+                    <div class="card" style="width: 480px; box-sizing: border-box; border-left: 5px solid #10B981;">
+                        <h3 style="text-align: center;"><i class="fa-solid fa-bullseye"></i> Project Goal</h3>
                         <ul>
                             <li style="color: #6EE7B7;"><strong>Full-Automation:</strong> 수집부터 발송까지 100% 무인화</li>
                             <li style="color: #6EE7B7;"><strong>High-Quality:</strong> Claude 4.5 기반의 깊이 있는 분석</li>
@@ -565,22 +580,24 @@
                 <h2>핵심 기술 1: 고정밀 데이터 수집</h2>
                 <p>Serper API 활용: 노이즈는 거르고, 핵심만 담습니다.</p>
 
-                <div class="two-columns" style="margin-top: 20px;">
-                    <div class="card">
-                        <h3><i class="fa-solid fa-filter"></i> Search Operators (검색 연산자)</h3>
-                        <p>단순 검색이 아닌 <strong>타겟팅 쿼리</strong> 생성</p>
+                <div class="two-columns"
+                    style="margin-top: 20px; display: grid; grid-template-columns: repeat(2, 640px); justify-content: center; gap: 30px; width: 100%;">
+                    <div class="card" style="width: 640px; box-sizing: border-box;">
+                        <h3 style="text-align: center;"><i class="fa-solid fa-filter"></i> Search Operators (검색 연산자)
+                        </h3>
+                        <p style="text-align: center;">단순 검색이 아닌 <strong>타겟팅 쿼리</strong> 생성</p>
                         <div class="code-block">
                             site:blooloop.com "Immersive Tech"<br>
                             filetype:pdf "Visitor Experience Report"<br>
                             "Gen Z" AND "Pop-up Store" after:2025-01
                         </div>
                     </div>
-                    <div class="card">
-                        <h3><i class="fa-solid fa-earth-americas"></i> 지역 및 언어 최적화</h3>
-                        <p>비즈니스 목적에 맞는 <strong>시장 타겟팅</strong></p>
+                    <div class="card" style="width: 640px; box-sizing: border-box;">
+                        <h3 style="text-align: center;"><i class="fa-solid fa-earth-americas"></i> 지역 및 언어 최적화</h3>
+                        <p style="text-align: center;">비즈니스 목적에 맞는 <strong>시장 타겟팅</strong></p>
                         <ul style="margin-top: 20px;">
-                            <li><strong>gl:kr</strong> 국내 최신 뉴스 집중</li>
-                            <li><strong>gl:us</strong> 글로벌 트렌드 선점</li>
+                            <li><strong>gl:kr</strong> 파라미터 활용으로 국내 비즈니스 환경에 최적화된 최신 뉴스 집중 수집</li>
+                            <li><strong>gl:us</strong> 설정을 통한 글로벌 핵심 시장의 실시간 트렌드 선점 및 해외 데이터 확보</li>
                         </ul>
                     </div>
                 </div>
@@ -654,8 +671,9 @@
         <div class="slide" id="slide-7">
             <div class="content-box">
                 <h2>운영 효율화: No-Code Operation</h2>
+                <p>복잡한 코딩 없이, 누구나 즉시 비즈니스 로직을 제어할 수 있습니다.</p>
                 <div class="two-columns"
-                    style="display: grid; grid-template-columns: repeat(2, 600px); justify-content: center; gap: 30px; width: 100%;">
+                    style="margin-top: 30px; display: grid; grid-template-columns: repeat(2, 600px); justify-content: center; gap: 30px; width: 100%;">
                     <div class="card" style="width: 600px; box-sizing: border-box;">
                         <h3 style="text-align: center;"><i class="fa-brands fa-google-drive"></i> Google Sheets 컨트롤 타워
                         </h3>
