@@ -7,7 +7,7 @@
     <title>인타임테크 제안서 - AI 뉴스레터 자동화</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 
         :root {
             --primary-color: #2563EB;
@@ -64,7 +64,7 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            padding: 200px 40px 40px;
+            padding: 80px 40px 40px;
             box-sizing: border-box;
             background: radial-gradient(circle at top right, #1e3a8a 0%, #111827 60%);
             /* 내용이 넘치면 스크롤 가능하게 변경 */
@@ -160,6 +160,16 @@
             color: var(--primary-color);
             margin-bottom: 15px;
             display: block;
+        }
+
+        /* Mobile Scrollbar Style for Newsletter Cards - HIDDEN for cleaner look */
+        .card::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Global Typography Refinements for Presentation */
+        h4 {
+            letter-spacing: -0.5px;
         }
 
         /* Flowchart Styles */
@@ -634,38 +644,240 @@
         <div class="slide" id="slide-6">
             <div class="content-box">
                 <h2>차별화 전략: 멀티 템플릿 로테이션</h2>
-                <p>매주 새로운 경험으로 구독자 피로도를 관리합니다.</p>
+                <p>주차별 자동 순환 시스템으로 매주 새롭고 설레는 브랜드 경험을 구독자에게 선물합니다.</p>
 
-                <div style="display: flex; justify-content: center; gap: 20px; margin-top: 30px; flex-wrap: wrap;">
-                    <div class="card"
-                        style="width: 180px; height: 220px; background: white; color: #333; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                        <div style="width: 80%; height: 60px; background: #eee; margin-bottom: 10px;"></div>
-                        <div style="width: 80%; height: 8px; background: #ddd; margin-bottom: 5px;"></div>
-                        <div style="width: 60%; height: 8px; background: #ddd;"></div>
-                        <h4 style="margin-top:15px; color: #333; font-size: 1rem;">Type A<br>뉴스 큐레이션</h4>
+                <div style="display: flex; justify-content: center; gap: 30px; margin-top: 30px; flex-wrap: nowrap;">
+                    <!-- Type A Wrapper -->
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <h4
+                            style="color: var(--accent-color); margin-bottom: 15px; font-size: 1.2rem; font-weight: bold;">
+                            Type A: 뉴스 큐레이션</h4>
+                        <div class="card"
+                            style="width: 360px; height: 600px; background: white; color: #1e293b; display: flex; flex-direction: column; padding: 0; overflow-y: auto; border-radius: 8px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+
+                            <!-- Header -->
+                            <div style="padding: 20px 20px 15px 20px; border-bottom: 1px solid #f1f5f9;">
+                                <div
+                                    style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">
+                                    2026년 1월 8일</div>
+                                <div
+                                    style="font-family: 'Noto Sans KR', sans-serif; font-size: 1.4rem; font-weight: 800; line-height: 1.3;">
+                                    주간 테마파크 브리핑</div>
+                            </div>
+
+                            <!-- Feed Item 1 (Main) -->
+                            <div style="padding-bottom: 25px;">
+                                <img src="./assets/img_curation.png" alt="Epic Universe"
+                                    style="width: 100%; height: 200px; object-fit: cover;">
+                                <div style="padding: 20px 20px 0 20px;">
+                                    <h5
+                                        style="font-size: 1.1rem; font-weight: 700; margin: 0 0 10px 0; line-height: 1.4; word-break: keep-all;">
+                                        유니버설 '에픽 유니버스': 단순한 확장이 아닌 생태계의 완성</h5>
+                                    <p
+                                        style="font-size: 0.9rem; line-height: 1.65; color: #475569; margin: 0 0 15px 0; word-break: keep-all;">
+                                        유니버설 스튜디오가 올랜도에 새로운 차원의 문을 엽니다. '에픽 유니버스'는 단순한 테마파크가 아닙니다. 닌텐도 월드, 드래곤 길들이기, 다크
+                                        유니버스 등 강력한 IP를 각각의 독립된 세계로 구현하고, 이들을 중앙 허브로 연결하는 '멀티 IP 생태계' 전략의 결정체입니다. 이는 방문객의
+                                        체류 시간을 획기적으로 늘리고, 디즈니의 아성을 위협할 가장 강력한 무기가 될 것입니다.
+                                    </p>
+                                    <div
+                                        style="background: #f8fafc; border-left: 3px solid var(--accent-color); padding: 12px 15px; margin-top: 10px;">
+                                        <div
+                                            style="font-size: 0.75rem; font-weight: bold; color: var(--accent-color); margin-bottom: 5px;">
+                                            WHY IT MATTERS</div>
+                                        <div
+                                            style="font-size: 0.85rem; line-height: 1.5; color: #334155; word-break: keep-all;">
+                                            올랜도 시장에서 디즈니의 '멀티 데이(Multi-day)' 독점 체제가 무너질 수 있습니다. IP 중심의 공간 설계가 방문객 경험을
+                                            어떻게 변화시키는지 주목해야 합니다.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Feed Item 2 (Separator) -->
+                            <div
+                                style="height: 10px; background: #f1f5f9; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;">
+                            </div>
+
+                            <!-- Feed Item 2 -->
+                            <div style="padding: 25px 20px;">
+                                <div
+                                    style="font-size: 0.75rem; color: var(--primary-color); font-weight: 700; margin-bottom: 8px;">
+                                    TECHNOLOGY</div>
+                                <h5
+                                    style="font-size: 1.1rem; font-weight: 700; margin: 0 0 10px 0; line-height: 1.4; word-break: keep-all;">
+                                    디즈니의 '홀로 타일(Holo-Tile)': 무한히 걷는 바닥</h5>
+                                <p
+                                    style="font-size: 0.9rem; line-height: 1.65; color: #475569; margin: 0 0 15px 0; word-break: keep-all;">
+                                    제자리에서 어느 방향으로든 무한히 걸을 수 있는 바닥 기술이 공개되었습니다. 이 기술은 VR 경험의 최대 난제였던 '이동의 제약'을 완벽하게 해결할
+                                    잠재력을 가지고 있습니다. 좁은 실내 공간에서도 광활한 스타워즈의 사막을 탐험하는 경험이 가능해집니다.
+                                </p>
+                                <div
+                                    style="background: #f8fafc; border-left: 3px solid #64748b; padding: 12px 15px; margin-top: 10px;">
+                                    <div
+                                        style="font-size: 0.75rem; font-weight: bold; color: #64748b; margin-bottom: 5px;">
+                                        INSIGHT</div>
+                                    <div
+                                        style="font-size: 0.85rem; line-height: 1.5; color: #334155; word-break: keep-all;">
+                                        물리적 공간의 제약을 뛰어넘는 하이브리드 어트랙션의 시대가 열리고 있습니다.</div>
+                                </div>
+                            </div>
+
+                            <!-- Feed Item 3 (Separator) -->
+                            <div
+                                style="height: 10px; background: #f1f5f9; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;">
+                            </div>
+
+                            <!-- Feed Item 3 -->
+                            <div style="padding: 25px 20px;">
+                                <div style="font-size: 0.75rem; color: #e11d48; font-weight: 700; margin-bottom: 8px;">
+                                    GLOBAL EXPANSION</div>
+                                <h5
+                                    style="font-size: 1.1rem; font-weight: 700; margin: 0 0 10px 0; line-height: 1.4; word-break: keep-all;">
+                                    사우디 '키디야(Qiddiya)': 사막 위의 엔터테인먼트 제국</h5>
+                                <p style="font-size: 0.9rem; line-height: 1.65; color: #475569; margin: 0;">
+                                    세계에서 가장 빠른 롤러코스터와 드래곤볼 테마파크. 사우디아라비아가 오일 머니를 앞세워 글로벌 테마파크의 판도를 흔들고 있습니다. 단순한 놀이공원이
+                                    아닌, 거주와 휴양, 스포츠가 결합된 미래형 도시 모델을 제시합니다.
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card"
-                        style="width: 180px; height: 220px; background: white; color: #333; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                        <div
-                            style="width: 90%; height: 100px; background: #eee; margin-bottom: 10px; display: flex; align-items: center; justify-content: center;">
-                            IMG</div>
-                        <div style="width: 90%; height: 15px; background: #ddd;"></div>
-                        <h4 style="margin-top:15px; color: #333; font-size: 1rem;">Type B<br>매거진형</h4>
+
+                    <!-- Type B Wrapper -->
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <h4
+                            style="color: var(--accent-color); margin-bottom: 15px; font-size: 1.2rem; font-weight: bold;">
+                            Type B: 매거진형</h4>
+                        <div class="card"
+                            style="width: 360px; height: 600px; background: #0f172a; color: #f8fafc; display: flex; flex-direction: column; padding: 0 !important; overflow-y: auto; border-radius: 8px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4); border: none !important;">
+                            <div
+                                style="position: relative; height: 500px; width: 100%; flex-shrink: 0; margin: 0 !important; padding: 0 !important;">
+                                <img src="./assets/img_magazine.png" alt="Immersive Experience"
+                                    style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85; display: block; margin: 0 !important; border: none !important;">
+                                <div
+                                    style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 40px 30px; background: linear-gradient(to top, #0f172a 20%, transparent);">
+                                    <div
+                                        style="font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 700; line-height: 1.1; margin-bottom: 20px; text-shadow: 0 4px 20px rgba(0,0,0,0.6); word-break: keep-all; letter-spacing: -0.02em;">
+                                        The End of<br>Passive<br>Entertainment
+                                    </div>
+                                    <div
+                                        style="font-size: 0.85rem; opacity: 0.9; letter-spacing: 2px; text-transform: uppercase; font-family: 'Noto Sans KR', sans-serif;">
+                                        Feature Story &middot; Jan 2026</div>
+                                </div>
+                            </div>
+                            <!-- Editorial Body -->
+                            <div style="padding: 40px 30px; background: #0f172a;">
+                                <div
+                                    style="font-family: 'Noto Sans KR', sans-serif; font-size: 1.05rem; line-height: 1.9; color: #cbd5e1; margin-bottom: 35px; word-break: keep-all; font-weight: 300;">
+                                    <span
+                                        style="float: left; font-family: 'Playfair Display', serif; font-size: 4rem; line-height: 0.7; font-weight: 700; margin-right: 15px; margin-bottom: -8px; color: var(--accent-color);">테</span>마파크는
+                                    더 이상 '타는 곳(Riding)'이 아닙니다. 이제는 '살아보는 곳(Living)'입니다. 수십 년간 이어져 온 "줄을 서고, 탑승하고, 환호하는"
+                                    선형적 경험의 고리가 끊어지고 있습니다. 이머시브 시어터(Immersive Theater)의 문법이 파크 안으로 깊숙이 침투했기 때문입니다.
+                                </div>
+
+                                <blockquote
+                                    style="border-left: 4px solid var(--accent-color); margin: 40px 0; padding-left: 25px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.5rem; line-height: 1.4; color: #fff; word-break: keep-all;">
+                                    "We are moving from observation to embodiment."
+                                </blockquote>
+
+                                <div
+                                    style="font-family: 'Noto Sans KR', sans-serif; font-size: 1.05rem; line-height: 1.9; color: #cbd5e1; margin-bottom: 35px; word-break: keep-all; font-weight: 300;">
+                                    디즈니의 '스타워즈: 갤럭틱 스타크루저'는 비록 상업적 도전 과제에 직면했지만, 그들이 제시한 방향성만큼은 명확했습니다. 2박 3일간 그 누구도 아닌
+                                    '나 자신'의 이야기로 채워지는 공간. 이것은 건축학적 설계가 아닌 심리학적 설계입니다.
+                                </div>
+
+                                <h5
+                                    style="font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: #fff; margin: 50px 0 20px 0; border-bottom: 1px solid #334155; padding-bottom: 15px;">
+                                    New Business Model</h5>
+
+                                <div
+                                    style="font-family: 'Noto Sans KR', sans-serif; font-size: 1.05rem; line-height: 1.9; color: #cbd5e1; margin-bottom: 30px; word-break: keep-all; font-weight: 300;">
+                                    방문객이 수동적 관찰자에서 능동적 참여자로 변할 때, 지갑을 여는 방식도 달라집니다. 기념품 가게에서 물건을 사는 것이 아니라, 자신의 캐릭터를 강화할
+                                    아이템을 획득합니다. 식사는 단순한 허기 해결이 아니라 스토리의 일부가 됩니다. 이것이 차세대 테마파크가 추구하는 '완전한 몰입(Total
+                                    Immersion)'의 경제학입니다.
+                                </div>
+
+
+                            </div>
+                        </div>
                     </div>
-                    <div class="card"
-                        style="width: 180px; height: 220px; background: white; color: #333; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                        <div style="width: 80%; height: 8px; background: #ddd; margin-bottom: 8px;"></div>
-                        <div style="width: 80%; height: 8px; background: #ddd; margin-bottom: 8px;"></div>
-                        <div style="width: 80%; height: 8px; background: #ddd; margin-bottom: 8px;"></div>
-                        <div style="width: 80%; height: 8px; background: #ddd; margin-bottom: 8px;"></div>
-                        <h4 style="margin-top:15px; color: #333; font-size: 1rem;">Type C<br>리포트형</h4>
+
+                    <!-- Type C Wrapper -->
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <h4
+                            style="color: var(--accent-color); margin-bottom: 15px; font-size: 1.2rem; font-weight: bold;">
+                            Type C: 리포트형</h4>
+                        <div class="card"
+                            style="width: 360px; height: 600px; background: #f8fafc; color: #333; display: flex; flex-direction: column; padding: 0; overflow-y: auto; border-radius: 8px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+
+                            <!-- Report Header -->
+                            <div style="padding: 30px 25px 20px 25px; background: white;">
+                                <div
+                                    style="font-size: 0.8rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">
+                                    Market Intelligence</div>
+                                <h3
+                                    style="font-size: 1.6rem; font-weight: 800; margin: 0; color: #0f172a; letter-spacing: -0.05em;">
+                                    2025 Outlook</h3>
+                            </div>
+
+                            <!-- Key Metric -->
+                            <div
+                                style="padding: 10px 25px 30px 25px; background: white; border-bottom: 1px solid #e2e8f0;">
+                                <div style="display: flex; align-items: baseline; gap: 10px;">
+                                    <span
+                                        style="font-size: 3.5rem; font-weight: 900; color: #2563eb; letter-spacing: -3px;">+15%</span>
+                                    <span style="font-size: 1.1rem; color: #64748b; font-weight: 600;">YoY 성장</span>
+                                </div>
+                                <div style="font-size: 0.95rem; color: #64748b; margin-top: 8px; word-break: keep-all;">
+                                    글로벌 테마파크 방문객 회복률 및 지출 증가 전망치</div>
+                            </div>
+
+                            <!-- Chart Area -->
+                            <div style="padding: 30px 25px; background: white; margin-top: 15px; flex-shrink: 0;">
+                                <h5 style="font-size: 1rem; font-weight: 700; color: #334155; margin: 0 0 20px 0;">방문객
+                                    회복 트렌드 (Index)</h5>
+                                <img src="./assets/img_report.png" alt="Growth Chart"
+                                    style="width: 100%; border-radius: 4px; border: 1px solid #f1f5f9; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                                <div
+                                    style="display: flex; justify-content: space-between; margin-top: 15px; font-size: 0.8rem; color: #94a3b8;">
+                                    <span>2022</span>
+                                    <span>2023</span>
+                                    <span>2024(E)</span>
+                                    <span>2025(F)</span>
+                                </div>
+                            </div>
+
+                            <!-- Analysis List -->
+                            <div style="padding: 30px 25px;">
+                                <h5
+                                    style="font-size: 0.95rem; font-weight: 700; color: #475569; margin: 0 0 20px 0; text-transform: uppercase;">
+                                    핵심 요약 (Key Takeaways)</h5>
+                                <ul
+                                    style="margin: 0; padding-left: 15px; display: flex; flex-direction: column; gap: 20px;">
+                                    <li
+                                        style="font-size: 0.95rem; line-height: 1.6; color: #334155; word-break: keep-all;">
+                                        <strong>경험의 프리미엄화 (Premiumization)</strong><br>
+                                        전체 방문객 수는 팬데믹 이전 수준을 회복 중이나, 1인당 지출액(Per-capita spending)은 20% 이상 급증했습니다. VIP
+                                        투어, 패스트 트랙 등 프리미엄 서비스에 대한 수요가 폭발적으로 증가하고 있습니다.
+                                    </li>
+                                    <li
+                                        style="font-size: 0.95rem; line-height: 1.6; color: #334155; word-break: keep-all;">
+                                        <strong>IP 확장의 가속화</strong><br>
+                                        강력한 지식재산권(IP)을 보유한 파크의 회복 속도가 그렇지 않은 파크보다 2배 이상 빠릅니다. 넷플릭스 등 OTT 콘텐츠의 공간화 시도가
+                                        2025년의 주요 화두가 될 것입니다.
+                                    </li>
+                                    <li
+                                        style="font-size: 0.95rem; line-height: 1.6; color: #334155; word-break: keep-all;">
+                                        <strong>아시아 시장의 약진</strong><br>
+                                        중국과 중동 시장의 신규 프로젝트들이 2025년 대거 오픈하며, 글로벌 테마파크 시장의 중심축이 서서히 아시아로 이동하고 있습니다.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <p style="text-align: center; margin-top: 20px; color: var(--accent-color);">
-                    <i class="fa-solid fa-rotate"></i> 주차별 자동 순환 발송 시스템
-                </p>
             </div>
+
         </div>
+
 
         <!-- Slide 7: Operation -->
         <div class="slide" id="slide-7">
@@ -773,12 +985,7 @@
                 </button>
             </div>
 
-            <div class="ai-output-area" id="aiOutput">
-                <div style="color: #6B7280; text-align: center; margin-top: 60px;">
-                    주제와 톤앤매너를 선택하고<br>'생성하기' 버튼을 눌러주세요.<br>
-                    <small>(Gemini Pro 2.5 모델이 실시간으로 작성합니다)</small>
-                </div>
-            </div>
+            <div class="ai-output-area" id="aiOutput"></div>
 
             <div class="loading-spinner" id="loadingSpinner">
                 <i class="fa-solid fa-circle-notch fa-spin fa-2x"></i>
