@@ -1,8 +1,0 @@
-feat: Finalize premium newsletter layouts and content
-
-- Update Slide 6 padding (100px -> 80px) for better spacing
-- Fix Type B card layout to strictly full-bleed (zero padding)
-- Update Type C chart image to 3D infographic style (Growth vs Cost)
-- Remove placeholder text from AI Demo modal
-- Update dates to 2026 for relevance
-- Merge Slide 6 bottom text into header for cleaner layout

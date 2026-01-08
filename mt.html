@@ -138,21 +138,41 @@
             width: 100%;
         }
 
+        /* Card Custom Scrollbar */
+        .card::-webkit-scrollbar {
+            width: 6px;
+            /* 얇게 */
+        }
+
+        .card::-webkit-scrollbar-track {
+            background: transparent;
+            /* 트랙 투명 */
+        }
+
+        .card::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .card::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
         .card {
             background-color: var(--card-bg);
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            border: 1px solid #374151;
+            border: none;
             transition: transform 0.3s;
-            overflow: hidden;
+            overflow-y: auto;
+            overflow-x: hidden;
             width: 550px;
             box-sizing: border-box;
         }
 
         .card:hover {
             transform: translateY(-5px);
-            border-color: var(--primary-color);
         }
 
         .icon-large {
@@ -538,6 +558,14 @@
                 <div class="presenter">
                     인타임테크 김정헌 실장 | 2025. 01.
                 </div>
+
+            </div>
+
+            <div style="position: absolute; bottom: 85px; right: 30px; z-index: 10;">
+                <div
+                    style="background: rgba(255, 255, 255, 0.05); border: 1px solid #374151; padding: 12px 18px; border-radius: 8px; text-align: left; font-size: 0.85rem; color: #9ca3af; line-height: 1.5;">
+                    본 자료는 1920 해상도, F11(전체화면)에 최적화되어 있습니다.<br>Prev, Next는 키보드 화살표로도 이동 가능합니다.
+                </div>
             </div>
         </div>
 
@@ -770,7 +798,7 @@
                             <div
                                 style="position: relative; height: 500px; width: 100%; flex-shrink: 0; margin: 0 !important; padding: 0 !important;">
                                 <img src="./assets/img_magazine.png" alt="Immersive Experience"
-                                    style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85; display: block; margin: 0 !important; border: none !important;">
+                                    style="width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; margin: 0; border: none !important; transform: scale(1.1) translateY(-15px);">
                                 <div
                                     style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 40px 30px; background: linear-gradient(to top, #0f172a 20%, transparent);">
                                     <div
@@ -842,8 +870,8 @@
                                 style="padding: 10px 25px 30px 25px; background: white; border-bottom: 1px solid #e2e8f0;">
                                 <div style="display: flex; align-items: baseline; gap: 10px;">
                                     <span
-                                        style="font-size: 3.5rem; font-weight: 900; color: #2563eb; letter-spacing: -3px;">+15%</span>
-                                    <span style="font-size: 1.1rem; color: #64748b; font-weight: 600;">YoY 성장</span>
+                                        style="font-size: 3.5rem; font-weight: 900; color: #10B981; letter-spacing: -3px;">+15%</span>
+                                    <span style="font-size: 1.1rem; color: #64748b; font-weight: 600;">성장</span>
                                 </div>
                                 <div style="font-size: 0.95rem; color: #64748b; margin-top: 8px; word-break: keep-all;">
                                     글로벌 테마파크 방문객 회복률 및 지출 증가 전망치</div>
@@ -872,19 +900,19 @@
                                 <ul
                                     style="margin: 0; padding-left: 15px; display: flex; flex-direction: column; gap: 20px;">
                                     <li
-                                        style="font-size: 0.95rem; line-height: 1.6; color: #334155; word-break: keep-all;">
+                                        style="font-size: 0.95rem; line-height: 1.6; color: #334155; padding-right: 10px;">
                                         <strong>경험의 프리미엄화 (Premiumization)</strong><br>
                                         전체 방문객 수는 팬데믹 이전 수준을 회복 중이나, 1인당 지출액(Per-capita spending)은 20% 이상 급증했습니다. VIP
                                         투어, 패스트 트랙 등 프리미엄 서비스에 대한 수요가 폭발적으로 증가하고 있습니다.
                                     </li>
                                     <li
-                                        style="font-size: 0.95rem; line-height: 1.6; color: #334155; word-break: keep-all;">
+                                        style="font-size: 0.95rem; line-height: 1.6; color: #334155; padding-right: 10px;">
                                         <strong>IP 확장의 가속화</strong><br>
                                         강력한 지식재산권(IP)을 보유한 파크의 회복 속도가 그렇지 않은 파크보다 2배 이상 빠릅니다. 넷플릭스 등 OTT 콘텐츠의 공간화 시도가
                                         2025년의 주요 화두가 될 것입니다.
                                     </li>
                                     <li
-                                        style="font-size: 0.95rem; line-height: 1.6; color: #334155; word-break: keep-all;">
+                                        style="font-size: 0.95rem; line-height: 1.6; color: #334155; padding-right: 10px;">
                                         <strong>아시아 시장의 약진</strong><br>
                                         중국과 중동 시장의 신규 프로젝트들이 2025년 대거 오픈하며, 글로벌 테마파크 시장의 중심축이 서서히 아시아로 이동하고 있습니다.
                                     </li>
@@ -953,7 +981,7 @@
                 </div>
 
                 <div class="card"
-                    style="margin-top: 30px; text-align: center; background: rgba(37, 99, 235, 0.2); border-color: var(--primary-color);">
+                    style="margin-top: 30px; margin-left: auto; margin-right: auto; width: fit-content; text-align: center; background: rgba(37, 99, 235, 0.2); border-color: var(--primary-color); white-space: nowrap;">
                     <strong>Future Plan:</strong> 개인화 추천 뉴스레터 & SNS 자동 업로드 확장 (One-Source Multi-Use)
                 </div>
             </div>
@@ -974,7 +1002,8 @@
 
 
         <div class="controls">
-            <button class="btn btn-ai" onclick="openModal()"><i class="fa-solid fa-robot"></i> AI Demo</button>
+            <button class="btn btn-ai" onclick="openModal()" style="display: none;"><i class="fa-solid fa-robot"></i> AI
+                Demo</button>
             <span class="page-indicator" id="page-num">1 / 9</span>
             <button class="btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i> Prev</button>
             <button class="btn" onclick="nextSlide()">Next <i class="fa-solid fa-chevron-right"></i></button>
